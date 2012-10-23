@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+	<bean id="shopDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver.className}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${db-migrations.db.username}" />
+		<property name="password" value="${db-migrations.db.password}" />
+		<property name="connectionProperties" value="oracle.net.ssl_cipher_suites=${db.oracle.net.ssl_cipher_suites}" />
+		<property name="maxActive" value="20" />
+		<property name="maxWait" value="10000" />
+	</bean>
+
+	<bean id="shopAppDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver.className}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="connectionProperties" value="oracle.net.ssl_cipher_suites=${db.oracle.net.ssl_cipher_suites}" />
+		<property name="maxActive" value="20" />
+		<property name="maxWait" value="10000" />
+	</bean>
+
+</beans>

@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>net.sorted</groupId>
+	<artifactId>shop</artifactId>
+	<packaging>pom</packaging>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>shop</name>
+	<description>Shop Project</description>
+
+	<properties>
+		<!-- Dependencies -->
+		<spring.security.version>3.1.0.RELEASE</spring.security.version>
+		<aspectj.version>1.5.4</aspectj.version>
+		<spring.version>3.1.0.RELEASE</spring.version>
+		<spring.agent.version>2.5.4</spring.agent.version>
+		<logback.version>1.0.6</logback.version>
+		<groovy.version>1.7.5</groovy.version>
+		<slf4j.version>1.6.5</slf4j.version>
+		<c5.version>0.9.7</c5.version>
+		<hamcrest.version>1.1</hamcrest.version>
+		<ehcache.version>2.4.3</ehcache.version>
+		<ojcbc.version>11.2.0.2.0</ojcbc.version>
+		<commons.dbcp.version>1.4</commons.dbcp.version>
+		<commons.cli.version>1.2</commons.cli.version>
+		<commons.io.version>2.1</commons.io.version>
+		<tomcat.version>6.0.35</tomcat.version>
+		<jdk.version>1.6.0_30</jdk.version>		
+		<spring.jpa.version>1.0.3.RELEASE</spring.jpa.version>
+		<hibernate.jpa.version>3.5.6-Final</hibernate.jpa.version>
+		<hibernate.version>3.6.5.Final</hibernate.version>
+		<hibernate.entitymanager.version>3.6.5.Final</hibernate.entitymanager.version>
+		<hibernate.validator.version>4.2.0.Final</hibernate.validator.version>
+		
+		<!-- Plug-in versions -->
+		<findbugs.plugin.version>2.3.2</findbugs.plugin.version>
+		<findbugs.version>0.9.6</findbugs.version>
+		<cobertura.version>2.5.1</cobertura.version>
+		<junit.version>4.10</junit.version>
+		<maven.surefire.version>2.10</maven.surefire.version>
+		
+		<!-- Configuration variables -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+<!--
+	<scm>
+		<connection>scm:svn:http://daxa009z.unix.anz:3960/flowfx/repo/flowfx/trunk</connection>
+		<developerConnection>scm:svn:http://daxa009z.unix.anz:3960/flowfx/repo/flowfx/trunk</developerConnection>
+	</scm>
+-->
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- for executing programs in a separate process -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>1.2</version>
+				</plugin>
+				<!-- Assembly -->
+				<plugin>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.3</version>
+					<executions>
+						<execution>
+							<id>make-assembly</id>
+							<phase>package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+							<configuration>
+								<tarLongFileMode>gnu</tarLongFileMode>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<!-- Cobertura -->
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<version>${cobertura.version}</version>
+				</plugin>
+				<!-- Surefire Unit Testing -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${maven.surefire.version}</version>
+				</plugin>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-jar-plugin
+										</artifactId>
+										<versionRange>
+											[2.2,)
+										</versionRange>
+										<goals>
+											<goal>jar</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<!-- Make the eclipse plugin get the source or javadocs jars for dependencies -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.8</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+					<useProjectReferences>true</useProjectReferences>
+				</configuration>
+			</plugin>
+			<!-- configuration for release plugin 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.1</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<tagBase>http://daxa009z.unix.anz:3960/flowfx/repo/flowfx/tags</tagBase>
+					<branchBase>http://daxa009z.unix.anz:3960/flowfx/repo/flowfx/branches</branchBase>
+				</configuration>
+			</plugin>
+			-->
+			<!-- Force the compiler to be java 1.6 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+			<!-- Unit tests -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-javaagent:${settings.localRepository}/org/springframework/spring-agent/${spring.agent.version}/spring-agent-${spring.agent.version}.jar</argLine>
+					<skip>false</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<id>default-test</id>
+						<configuration>
+							<includes>
+								<include>**/Test*.java</include>
+								<include>**/*Test.java</include>
+								<include>**/*TestCase.java</include>
+							</includes>
+							<excludes>
+								<exclude>**/*$*</exclude>
+								<exclude>**/*SpringConfigurationTest.java</exclude>
+							</excludes>
+						</configuration>
+						<phase>test</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>always-forked-tests</id>
+						<configuration>
+							<fork>always</fork>
+							<includes>
+								<include>**/*SpringConfigurationTest.java</include>
+							</includes>
+						</configuration>
+						<phase>test</phase>
+						<goals>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<!--
+					Configure the jar plugin to produce three jars.
+					 one with only classes - shop-core.jar
+					 one that has all the resources (the etc folder) - shop-core-resources.jar
+					 one that has the tests - shop-core-tests.jar
+				-->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<includes>
+						<include>**/*.class</include>
+						<include>META-INF/**</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>resources</id>
+						<phase>process-resources</phase>
+						<configuration>
+							<classifier>resources</classifier>
+							<includes>
+								<include>**</include>
+							</includes>
+							<excludes>
+								<exclude>**/*.class</exclude>
+								<exclude>META-INF/**</exclude>
+							</excludes>
+						</configuration>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>test</id>
+						<configuration>
+							<includes>
+								<include>**</include>
+							</includes>
+						</configuration>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!--
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${checkstyle.version}</version>
+				 Define the dependency where configuraion and supression files are  
+				<dependencies>
+					<dependency>
+						<groupId>com.anz.flowfx</groupId>
+						<artifactId>flowfx-checkstyle</artifactId>
+						<version>${project.version}</version>
+						<classifier>resources</classifier>
+					</dependency>
+				</dependencies>
+			</plugin>
+			-->
+		</plugins>
+	</build>
+
+	<reporting>
+		<plugins>
+			<!-- Disable all default reports -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-project-info-reports-plugin</artifactId>
+				<version>2.4</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			<!-- Enable checkstyle report 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${checkstyle.version}</version>
+				<configuration>
+					<failOnViolation>true</failOnViolation>
+					<configLocation>anzCheckStyle.xml</configLocation>
+					<suppressionsLocation>anzSuppressions.xml</suppressionsLocation>
+				</configuration>
+			</plugin>
+			-->
+			<!--  Coberture test code coverage -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>${cobertura.version}</version>
+				<configuration>
+					<formats>
+						<format>html</format>
+						<format>xml</format>
+					</formats>
+					<outputDirectory>target/site/cobertura</outputDirectory>
+				</configuration>
+			</plugin>
+			<!-- Findbugs -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>${findbugs.plugin.version}</version>
+				<configuration>
+					<failOnError>false</failOnError>
+					<xmlOutput>true</xmlOutput>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+
+	<dependencies>
+<!--
+		<dependency>
+			<groupId>javax.management</groupId>
+			<artifactId>jmxremote_optional</artifactId>
+			<version>1.0.1_04</version>
+		</dependency>
+-->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jmock</groupId>
+			<artifactId>jmock-junit4</artifactId>
+			<version>2.5.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jmock</groupId>
+			<artifactId>jmock-legacy</artifactId>
+			<version>2.5.1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.objenesis</groupId>
+			<artifactId>objenesis</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+			<version>2.1_3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-all</artifactId>
+			<version>${hamcrest.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>findbugs</groupId>
+			<artifactId>findbugs</artifactId>
+			<version>${findbugs.version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-agent</artifactId>
+			<version>${spring.agent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>${aspectj.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+            		<artifactId>commons-io</artifactId>
+            		<version>${commons.io.version}</version>
+            		<scope>test</scope>
+        	</dependency>
+	</dependencies>
+<!--
+	<distributionManagement>
+		<repository>
+			<id>nexus-releases</id>
+			<name>Markets Releases</name>
+			<url>http://daxa009z.unix.anz:8112/nexus/content/repositories/markets-internal/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-snapshots</id>
+			<name>Markets Snapshots</name>
+			<url>http://daxa009z.unix.anz:8112/nexus/content/repositories/markets-internal-snapshot/</url>
+		</snapshotRepository>
+	</distributionManagement>
+-->
+	<!-- 
+		Due to the bug in maven release plugin we have to define all profiles in the root pom
+		
+		http://jira.codehaus.org/browse/MRELEASE-415
+	 -->
+	<profiles>
+		<profile>
+			<id>artefacts</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>2.1.2</version>
+						<configuration>
+							<includePom>true</includePom>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>hudson</id>
+		</profile>
+		<profile>
+			<id>hudson-site</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<reportsDirectory>${project.build.directory}/cobertura-surefire-reports</reportsDirectory>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<modules>
+		<module>shop-config</module>
+		<module>shop-db-migrations</module>
+		<module>shop-core</module>
+		<module>shop-web</module>
+	</modules>
+</project>

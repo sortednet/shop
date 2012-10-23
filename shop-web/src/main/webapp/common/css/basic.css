@@ -1,0 +1,40 @@
+
+.slideMain {
+	width=1000px;
+}
+
+.slideshowTitle {
+    background-color: #017DBB;
+    font-family: Arial Black, Gadget, sans-serif;
+    font-size: large;
+}
+
+.slideTitle {
+    background-color: #017DBB;
+    font-family: Arial Black, Gadget, sans-serif;
+    font-size: medium;
+    float:none;
+}
+
+
+
+.slideTextContent {
+	background-color:#FFFFFF;
+	height:600px;
+	width:500px;
+	float:left;
+	font-family: Verdanna, Gadget, sans-serif;
+}
+
+.slideMediaContent {
+	background-color:#FFFFFF;
+	height:600px;
+	width:500px;
+	float:left;
+}
+
+.slideFooter {
+	background-color: #017DBB;
+	clear:both;
+	text-align:center;
+}

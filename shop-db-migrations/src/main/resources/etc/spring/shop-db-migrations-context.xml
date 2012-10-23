@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+        >
+
+	<bean id="propertyConfigurer" class="net.sorted.config.PropertyConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:/etc/env/config.properties</value>
+                <value>classpath:/etc/env/config-%HOSTNAME%.properties</value>
+				<value>classpath:/etc/env/shop-db-migrations.properties</value>
+				<value>classpath:/etc/env/shop-db-migrations-%HOSTNAME%.properties</value>
+<!--				<value>file:${user.home}/SECURE_LOCATION/flowfx-passwords.txt</value> -->
+            </list>
+        </property>
+    </bean>
+
+	<import resource="classpath*:/etc/spring/shop-db-migrations-data-sources.xml"/>
+
+	<bean id="dbmsOutputLogger" class="net.sorted.shop.db.migrations.DbmsOutputLoggerImpl">
+		<property name="dbmsOutputBufferSize" value="10000000"/>
+		<property name="enableDbmsOutputSql">
+ 			<value>
+ 				BEGIN dbms_output.enable(:1); END;
+ 			</value>
+ 		</property>
+
+		<property name="fetchDbmsOutputSql">
+ 			<value>
+ 				declare
+					l_line varchar2(255);
+					l_done number;
+					l_buffer long;
+				begin
+					loop
+						exit when length(l_buffer)+255 > :maxbytes OR l_done = 1;
+						dbms_output.get_line( l_line, l_done );
+						l_buffer := l_buffer || l_line || chr(10);
+						end loop;
+						:done := l_done;
+						:buffer := l_buffer;
+				end;
+ 			</value>
+ 		</property>
+ 		
+ 		<property name="disableDbmsOutputSql">
+ 			<value>
+ 				BEGIN dbms_output.disable; END;
+ 			</value>
+ 		</property>
+ 		
+	</bean>
+	<bean id="noVersionStrategy" class="net.sorted.shop.db.carbonfive.NoVersionStrategy"/>
+    <bean id="migrationFactory" class="net.sorted.shop.db.carbonfive.PlsqlEnabledMigrationFactory">
+    	<property name="dbmsOutputLogger" ref="dbmsOutputLogger"/>
+    </bean>
+
+    <bean id="shopMigrationManager" class="com.carbonfive.db.migration.DataSourceMigrationManager">
+        <constructor-arg ref="shopDataSource"/>
+        <property name="migrationResolver">
+            <bean class="com.carbonfive.db.migration.ResourceMigrationResolver">
+                <constructor-arg value="classpath:/db/shop/migrations/"/>
+                <property name="migrationFactory" ref="migrationFactory"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="shopAppMigrationManager" class="com.carbonfive.db.migration.DataSourceMigrationManager">
+        <constructor-arg ref="shopAppDataSource"/>
+        <property name="migrationResolver">
+            <bean class="com.carbonfive.db.migration.ResourceMigrationResolver">
+                <constructor-arg value="classpath:/db/shop_app/migrations/"/>
+                <property name="migrationFactory" ref="migrationFactory"/>
+            </bean>
+        </property>
+        <property name="versionStratgey" ref="noVersionStrategy"/>
+    </bean>
+
+    <bean id="shopDropManager" class="com.carbonfive.db.migration.DataSourceMigrationManager">
+        <constructor-arg ref="shopDataSource"/>
+        <property name="migrationResolver">
+            <bean class="com.carbonfive.db.migration.ResourceMigrationResolver">
+                <constructor-arg value="classpath:/db/shop/drop/"/>
+                <property name="migrationFactory" ref="migrationFactory"/>
+            </bean>
+        </property>
+        <property name="versionStratgey" ref="noVersionStrategy"/>
+    </bean>
+    
+    <bean id="shopAppDropManager" class="com.carbonfive.db.migration.DataSourceMigrationManager">
+        <constructor-arg ref="shopAppDataSource"/>
+        <property name="migrationResolver">
+            <bean class="com.carbonfive.db.migration.ResourceMigrationResolver">
+                <constructor-arg value="classpath:/db/shop_app/drop/"/>
+                <property name="migrationFactory" ref="migrationFactory"/>
+            </bean>
+        </property>
+	    <property name="versionStratgey" ref="noVersionStrategy"/>
+    </bean>
+
+    
+    <bean id="dbMigrator" class="net.sorted.shop.db.migrations.DbMigratorImpl">
+    	<constructor-arg name="baseDbMigrationManager" ref="shopMigrationManager"/>
+    	<constructor-arg name="appMigrationManager" ref="shopAppMigrationManager"/>
+    	<constructor-arg name="baseDbDropManager" ref="shopDropManager"/>
+    	<constructor-arg name="appDropManager" ref="shopAppDropManager"/>
+    </bean>
+</beans>

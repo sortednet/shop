@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/decorators">
+	 
+	 <decorator name="notAuthenticated" page="notAuthenticatedDecorator.jsp">
+	 	<pattern>/**login.jsp</pattern>
+	 </decorator>
+	 
+	 <decorator name="main" page="/common/decorators/decorator.jsp">
+	 	<pattern>*</pattern>
+	 </decorator>
+
+</decorators>

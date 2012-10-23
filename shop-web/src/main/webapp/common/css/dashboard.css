@@ -1,0 +1,147 @@
+
+
+div.remoteComponent
+{
+	position:relative;
+	bottom:10px;
+    left:50px;
+	width:100px;
+	height:80px;
+	text-align:center;
+	border-style:solid;
+	border-width:1px;
+	font-family:sans-serif;
+	display:inline-block;
+	vertical-align: top;
+	border-radius: 5px;
+}
+	
+div.upAndRunning
+{
+	background-color:#00CC00;
+}
+div.down
+{
+	background-color:#FF3300;
+}
+div.unknown
+{
+	background-color:#CCCC33;
+}
+div.componentsSection
+{
+	border-style:solid;
+	border-width:1px;
+	background-color:#ECEFF1;
+}
+div.alertsSection
+{
+	border-style:solid;
+	border-width:1px;
+	background-color:#9DCCE4;
+}
+div.simpleSection
+{
+	border-style:solid;
+	border-width:1px;
+	width: 1000px
+}
+.error-row
+{
+	color:#FF0000;background-color: #F0F0F0;
+}
+
+.none
+{
+    color:green;background-color: #adff2f;
+}
+
+/* Styles for the component properties page */ 
+div.selectBean
+{
+	
+}
+
+div.beanAttributes
+{
+	background-color:#DDDDDD
+}
+
+div.beanOperations
+{
+	background-color:#DDDDDD	
+}
+div.banner
+{
+	background-color: #007DBA;	
+    background-repeat: no-repeat;
+    height: 15px;
+}
+
+.menu{
+	float: left;
+    height: 15px;    
+    background-color: #D0D0D0;
+    font-family: Arial Black, Gadget, sans-serif;
+    font-size: small;
+}
+
+.pageWrapper{
+	background-color:#F0F0F0;
+	border-style:solid;
+	border-width:1px;
+	padding-top:5px;
+	font-family: Verdana;
+    font-size: small;
+}
+.shortInput{
+	border-style: solid;
+	border-width: 1px;
+	border-color: black;
+	font-family: helvetica, arial, sans serif;
+	padding-left: 0px;	
+	max-width: 75px
+}
+.longInput{
+	border-style: solid;
+	border-width: 1px;
+	border-color: black;
+	font-family: helvetica, arial, sans serif;
+	padding-left: 0px;	
+	max-width: 300px
+}
+.button{
+	background-image:url("../images/button.gif");
+}
+
+.hasErrors {
+	color: red
+}
+
+.errorMsg {
+	color: red
+}
+.successMsg {
+	color:green
+}
+
+.noErrors {
+	color: green
+}
+
+.queueErrors 
+{
+	width: 100%;
+	border-collapse:collapse;
+}
+
+.queueErrors td, .queueErrors th
+{
+	border: 1px solid black;	
+}
+	
+.eodStepInError
+{
+	background-color: #FFB0B0;
+}	
+
